@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <title>Fiskaly</title>
+</head>
+
+<body>
+    <h1>Fiskaly</h1>
+    <div class="app_container">
+        <img id="side_logo" src="/fiskaly_logo.png">
+
+        <div class="login_details">
+            <form method="POST" action="/setup/authenticate" onsubmit="authAccount.disabled=true; document.getElementById('loadingspinner').style.display = 'inline-block'; return true;">
+                <% if (status_code == 200) { %>
+                    
+                <label for="apiKey">API Key</label>
+                <br>
+                <input type="text" id="apiKey" name="apiKey" value="<%= api_key %>" readonly>
+                <br>
+                <label for="apiSecret">API Secret</label>
+                <br>
+                <input type="text" id="apiSecret" name="apiSecret" value="<%= api_secret %>" readonly>
+                
+                <br>
+                <input id="exports-btn" type="submit" value="Data Exports" formaction="/setup/dataExports">
+                <input id="client_setting-btn" type="submit" value="Client Setting" formaction="/setup/clients">
+                <input id="transaction_setting-btn" type="submit" value="Transaction Setting" formaction="/setup/transactions">
+                <input id="remove_account-btn" type="submit" value="Remove Account" formaction="/setup/removeAccount">
+                <img id="loadingspinner" src="/load.gif" style="display: none; width:18px; height:18px; padding: 0; margin: 0;">
+                <br>
+            </form>
+            <p class="error-msg"><%= authCredentialsRes %></p>
+            <form method="POST" action="/setup/createTSS" onsubmit="createTSS.disabled=true; document.getElementById('loadingspinner_createTSS').style.display = 'inline-block'; return true;">
+                <input type="hidden" name="apiKey" value="<%= api_key %>">
+                <input type="hidden" name="apiSecret" value="<%= api_secret %>">
+                
+                <label for="adminPIN">Set Admin PIN</label>
+                <br>
+                <input type="text" id="adminPIN" name="adminPIN" value="<%= admin_pin %>" minlength="6">
+                <input id="createTSS" name="createTSS" type="submit" value="Create TSS">
+                <img id="loadingspinner_createTSS" src="/load.gif" style="display: none; width:18px; height:18px; padding: 0; margin: 0;"> 
+            </form>
+
+            <p class="error-msg"><%= createTSSRes %></p>
+                <% }else{ %>
+
+                <label for="apiKey">API Key</label>
+                <br>
+                <input type="text" id="apiKey" name="apiKey" value="<%= api_key %>">
+                <br>
+                <label for="apiSecret">API Secret</label>
+                <br>
+                <input type="text" id="apiSecret" name="apiSecret" value="<%= api_secret %>">
+
+                <input name="authAccount" id="authAccount" type="submit" value="Authenticate">
+                <img id="loadingspinner" src="/load.gif">
+            </form>
+            <p class="error-msg"><%= authCredentialsRes %></p>
+            <% } %>
+                
+            
+
+            <% if (status_code == 200) { %>
+
+                <% if (tssList.length > 0){ %>
+                    <div class="tss_credentials">
+        
+                        <h2>TSS(s)</h2>
+                        <br> 
+                        <% for (let i = 0; i < tssList.length; i++){ %>
+                            <form method="POST" action="/setup/disableTSS" onsubmit="disableTSS.disabled=true; document.getElementById('loadingspinner<%= i %>').style.display = 'inline-block'; return true;">
+                                
+                                <input type="hidden" name="apiKey" value="<%= api_key %>">
+                                <input type="hidden" name="apiSecret" value="<%= api_secret %>">
+
+                                <label for="tssIDs">TSS ID</label>
+                                <input type="text" name="tssIDs" id="tssIDs" value="<%= tssList[i].tss_id %>" readonly>  
+
+                                <label for="tssPIN">TSS PIN</label>
+                                <input type="text" name="tssPIN" id="tssPIN" value="<%= tssList[i].tss_pin %>" readonly>   
+                                
+                                <input name="disableTSS" id="disableTSS" type="submit" value="Disable TSS">
+                                <input id="tssClient" type="submit" value="Client(s)" formaction="/setup/tssClients">
+
+                                <img id="loadingspinner<%= i %>" src="/load.gif" style="display: none; width:18px; height:18px; padding: 0; margin: 0;">
+                            </form>
+                        <% } %>
+        
+                    </div>
+                <% } %>
+                <p class="error-msg"><%= disableTSSRes %></p>
+                <br>
+                <form method="POST" action="/setup/retrieveTSS" onsubmit="retrieveTSS.disabled=true; document.getElementById('loadingspinner_retrieveTSS').style.display = 'inline-block'; return true;">
+                    <input type="hidden" name="apiKey" value="<%= api_key %>">
+                    <input type="hidden" name="apiSecret" value="<%= api_secret %>">
+                    
+                    <label for="queryTSSID">TSS ID</label>
+                    <br>
+                    <input name="queryTSSID" type="text" id="queryTSSID" value="">
+                    <input name="retrieveTSS" id="retrieveTSS" type="submit" value="Retrieve TSS">
+                    <img id="loadingspinner_retrieveTSS" src="/load.gif" style="display: none; width:18px; height:18px; padding: 0; margin: 0;">
+                    <!--
+                    <div id="transactions_json-response">
+                        <pre id="tssInfo"><%= tssInfo %></pre>
+                    </div>
+                    -->
+                </form>
+		<br>
+		<br>
+                <p class="error-msg"><%= retrieveTSSRes %></p>
+                <% if (tssInfo){ %>
+                    <form id="queryTSS-form">
+                        <label for="tss_id">TSS ID</label>
+                        <br>
+                        <input name="tss_id" type="text" value="<%= tssInfo._id %>" readonly>
+                        <br>
+                        <label for="tssType">Type</label>
+                        <br>
+                        <input name="tssType" type="text" value="<%= tssInfo._type %>" readonly>
+                        <br>
+                        <label for="tssEnvironment">Environment</label>
+                        <br>
+                        <input name="tssEnvironment" type="text" value="<%= tssInfo._env %>" readonly>
+                        <br>
+                        <label for="tssVersion">Version</label>
+                        <br>
+                        <input name="tssVersion" type="text" value="<%= tssInfo._version %>" readonly>
+                        <br>
+                        <label for="tssCertificate">Certificate</label>
+                        <br>
+                        <input name="tssCertificate" type="text" value="<%= tssInfo.certificate %>" readonly>
+                        <br>
+                        <label for="tssSerialNum">Serial No.</label>
+                        <br>
+                        <input name="tssSerialNum" type="text" value="<%= tssInfo.serial_number %>" readonly>
+                        <br>
+                        <label for="tssPublicKey">Public Key</label>
+                        <br>
+                        <input name="tssPublicKey" type="text" value="<%= tssInfo.public_key %>" readonly>
+                        <br>
+                        <label for="tssSignatureAlgo">Signature Algorithm</label>
+                        <br>
+                        <input name="tssSignatureAlgo" type="text" value="<%= tssInfo.signature_algorithm %>" readonly>
+                        <br>
+                        <label for="tssSignatureTimeStampFormat">Signature Time Stamp Format</label>
+                        <br>
+                        <input name="tssSignatureTimeStampFormat" type="text" value="<%= tssInfo.signature_timestamp_format %>" readonly>
+                        <br>
+                        <label for="tssTransactionDataEncoding">Transaction Data Encoding</label>
+                        <br>
+                        <input name="tssTransactionDataEncoding" type="text" value="<%= tssInfo.transaction_data_encoding %>" readonly>
+                        <br>
+                        <label for="tssMaxRegisteredClient">Max Registered Clients</label>
+                        <br>
+                        <input name="tssMaxRegisteredClient" type="text" value="<%= tssInfo.max_number_registered_clients %>" readonly>
+                        <br>
+                        <label for="tssMaxActiveTransactions">Max Active Transactions</label>
+                        <br>
+                        <input name="tssMaxActiveTransactions" type="text" value="<%= tssInfo.max_number_active_transactions %>" readonly>
+                        <br>
+                        <label for="tssSupportedUpdateVariants">Supported Update Variants</label>
+                        <br>
+                        <input name="tssSupportedUpdateVariants" type="text" value="<%= tssInfo.supported_update_variants %>" readonly>
+                        <br>
+                        <label for="tssMetadata">Metadata</label>
+                        <br>
+                        <input name="tssMetadata" type="text" value="<%= tssInfo.metadata %>" readonly>
+                        <br>
+                        <label for="tssTimeCreation">Time Creation</label>
+                        <br>
+                        <input name="tssTimeCreation" type="text" value="<%= tssInfo.time_creation %>" readonly>
+                        <br>
+                        <label for="tssDescription">Description</label>
+                        <br>
+                        <input name="tssDescription" type="text" value="<%= tssInfo.description %>" readonly>
+                        <br>
+                        <label for="tssState">State</label>
+                        <br>
+                        <input name="tssState" type="text" value="<%= tssInfo.state %>" readonly>
+                        <br>
+                        <label for="tssSignatureCounter">Signature Counter</label>
+                        <br>
+                        <input name="tssSignatureCounter" type="text" value="<%= tssInfo.signature_counter %>" readonly>
+                        <br>
+                        <label for="tssNumRegisteredClients">Number of Registered Client(s)</label>
+                        <br>
+                        <input name="tssNumRegisteredClients" type="text" value="<%= tssInfo.number_registered_clients %>" readonly>
+                        <br>
+                        <label for="tssNumActiveTransactions">Number of Active Transaction(s)</label>
+                        <br>
+                        <input name="tssNumActiveTransactions" type="text" value="<%= tssInfo.number_active_transactions %>" readonly>
+                        <br>
+                        <label for="tssTimeUninit">'UNINITIALIZED' Time</label>
+                        <br>
+                        <input name="tssTimeUninit" type="text" value="<%= tssInfo.time_uninit %>" readonly>
+                        <br>
+                        <label for="tssTimeInit">'INITIALIZED' Time</label>
+                        <br>
+                        <input name="tssTimeInit" type="text" value="<%= tssInfo.time_init %>" readonly>
+                        <br>
+                        <label for="tssTimeDisable">'DISABLED' Time</label>
+                        <br>
+                        <input name="tssTimeDisable" type="text" value="<%= tssInfo.time_disable %>" readonly>
+
+                    </form>
+                <% } %>
+
+            <% } %>
+
+        </div>
+
+        
+    </div>
+		
+    <script src="/js/client.js"></script>
+
+</body>
+</html>

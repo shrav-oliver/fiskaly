@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <title>Fiskaly</title>
+</head>
+
+<body>
+    <h1>Fiskaly</h1>
+    <div class="app_container">
+        <img id="side_logo" src="/fiskaly_logo.png">
+
+        <div class="tss_details">
+            <form method="POST" action="/setup/createClient" onsubmit="createClient.disabled=true; document.getElementById('loadingspinner').style.display = 'inline-block'; return true;">
+                <input type="hidden" name="apiKey" value="<%= api_key %>">
+                <input type="hidden" name="apiSecret" value="<%= api_secret %>">
+
+                <label for="tssID" id="">TSS ID</label>
+                <br>
+                <input type="text" name="tssID" id="tssID" value="<%= tss_id %>" readonly>    
+                <br>
+                <label for="adminPIN">Admin PIN</label>
+                <br>
+                <input type="text" name="adminPIN" id="adminPIN" value="<%= admin_pin %>" readonly>
+                <br>  
+                <input type="submit" id="createClient" name="createClient" value="Create Client">
+                
+                <img id="loadingspinner" src="/load.gif">
+            </form>
+        </div>
+        <p class="error-msg"><%= createClientRes %></p>
+
+        <% if (clientList.length > 0){ %>
+            <div class="tss_clients_section">
+                <h2>Client(s)</h2>
+                <div class="tss_clients_details">
+                    <br>
+                    <% for (let i = 0; i < clientList.length; i++) { %>
+                        <form id="tss_clients-form" method="POST" action="/setup/deregisterClient" onsubmit="deregisterClient.disabled=true; document.getElementById('loadingspinner<%= i %>').style.display = 'inline-block'; return true;">
+                            <input type="hidden" name="apiKey" value="<%= api_key %>">
+                            <input type="hidden" name="apiSecret" value="<%= api_secret %>">
+                            <input type="hidden" name="tssID" value="<%= tss_id %>">
+                            <input type="hidden" name="adminPIN" value="<%= admin_pin %>">
+
+                            <label for="clientIDs">Client ID</label>
+                            <input type="text" name="clientIDs" id="clientIDs" value="<%= clientList[i]._id %>" readonly> 
+                        
+                        
+                            <label for="registerIDs">Register ID</label>
+                            <input type="text" name="registerIDs" id="registerIDs" value="1" readonly>        
+                        
+                            <input name="deregisterClient" id="deregisterClient" type="submit" value="Deregister Client">
+                            
+                            <img id="loadingspinner<%= i %>" src="/load.gif" style="display: none; width:18px; height:18px; padding: 0; margin: 0;">
+                           
+                        </form>
+                    <% } %>
+                </div>
+        <% } %>    
+            </div>
+            <p class="error-msg"><%= deregisterClientRes %></p>
+            
+        <div class="tss_transactions_details">
+            <form id="tss_transactions-form" method="POST" action="/setup/getTSSTransactions" onsubmit="getTSSTransactions.disabled=true; document.getElementById('loadingspinner-transaction').style.display = 'inline-block'; return true;">
+                <input type="hidden" name="apiKey" value="<%= api_key %>">
+                <input type="hidden" name="apiSecret" value="<%= api_secret %>">
+
+                <input type="hidden" name="tssID" value="<%= tss_id %>">
+                <input type="hidden" name="adminPIN" value="<%= admin_pin %>" readonly>
+                <input name="getTSSTransactions" id="getTSSTransactions" type="submit" value="Get Transactions">
+                <input id="listExportsTSS" type="submit" value="List Exports of TSS" formaction="/setup/listExportTSS">
+                
+                <img id="loadingspinner-transaction" src="/load.gif" style="display: none; width:18px; height:18px; padding: 0; margin: 0;">
+
+                <p class="error-msg"><%= tssSettingsRes %></p>
+
+                <% if (tssJSON) { %>
+                <div id="transactions_json-response">
+                    <% if (tssJSON._type == "TRANSACTION_LIST"){ %>
+                        <form>
+                            <h2>Transaction List: </h2>
+                            <br>
+                            <label for="numTransactions">Number of Transactions</label>
+                            <br>
+                            <input type="text" name="numTransactions" value="<%= tssJSON.count %>" readonly>
+                            <br>
+                            <label for="transType">Type</label>
+                            <br>
+                            <input type="text" name="transType" value="<%= tssJSON._type %>" readonly>
+                            <br>
+                            <label for="transEnvironment">Environment</label>
+                            <br>
+                            <input type="text" name="transEnvironment" value="<%= tssJSON._env %>" readonly>
+                            <br>
+                            <label for="transVersion">Version</label>
+                            <br>
+                            <input type="text" name="transVersion" value="<%= tssJSON._version %>" readonly>
+                            <br>
+                            <hr>
+                            <br>
+                            <% for (let i = 0; i < tssJSON.data.length; i++) { %>
+                                <h3>Transaction Number: <%= tssJSON.data[i].number %></h3>
+                                <br>
+                                <label for="transTimeStart">Transaction Time Start</label>
+                                <br>
+                                <input type="text" name="transTimeStart" value="<%= tssJSON.data[i].time_start %>" readonly>
+                                <br>
+                                <label for="eachTransTimeENd">Transaction Time End</label>
+                                <br>
+                                <input type="text" name="eachTransTimeENd" value="<%= tssJSON.data[i].time_end %>" readonly>
+                                <br>
+                                <label for="transClientSerialNum">Transaction Client Serial Number</label>
+                                <br>
+                                <input type="text" name="transClientSerialNum" value="<%= tssJSON.data[i].client_serial_number %>" readonly>
+                                <br>
+                                <label for="transTSSSerialNum">Transaction TSS Serial Number</label>
+                                <br>
+                                <input type="text" name="transTSSSerialNum" value="<%= tssJSON.data[i].tss_serial_number %>" readonly>
+                                <br>
+                                <label for="transState">Transaction State</label>
+                                <br>
+                                <input type="text" name="transState" value="<%= tssJSON.data[i].state %>" readonly>
+                                <br>
+                                <label for="transClientID">Transaction Client ID</label>
+                                <br>
+                                <input type="text" name="transClientID" value="<%= tssJSON.data[i].client_id %>" readonly>
+                                <br>
+                                <label for="transSchema">Transaction Schema</label>
+                                <br>
+                                <input type="text" name="transClientID" value="<%= tssJSON.data[i].schema %>" readonly>
+                                <br>
+                                <label for="transRevision">Transaction Revision</label>
+                                <br>
+                                <input type="text" name="transRevision" value="<%= tssJSON.data[i].revision %>" readonly>
+                                <br>
+                                <label for="transLatestRevision">Transaction Latest Revision</label>
+                                <br>
+                                <input type="text" name="transLatestRevision" value="<%= tssJSON.data[i].latest_revision %>" readonly>
+                                <br>
+                                <label for="transTSSID">Transaction TSS ID</label>
+                                <br>
+                                <input type="text" name="transTSSID" value="<%= tssJSON.data[i].tss_id %>" readonly>
+                                <br>
+                                <label for="transMetadata">Transaction Metadata</label>
+                                <br>
+                                <input type="text" name="transMetadata" value="<%= tssJSON.data[i].metadata %>" readonly>
+                                <br>
+                                <label for="eachTransType">Transaction Type</label>
+                                <br>
+                                <input type="text" name="eachTransType" value="<%= tssJSON.data[i]._type %>" readonly>
+                                <br>
+                                <label for="eachTransID">Transaction ID</label>
+                                <br>
+                                <input type="text" name="eachTransID" value="<%= tssJSON.data[i]._id %>" readonly>
+                                <br>
+                                <label for="eachTransEnvironment">Transaction Environment</label>
+                                <br>
+                                <input type="text" name="eachTransEnvironment" value="<%= tssJSON.data[i]._env %>" readonly>
+                                <br>
+                                <label for="eachTransVersion">Transaction Version</label>
+                                <br>
+                                <input type="text" name="eachTransVersion" value="<%= tssJSON.data[i]._version %>" readonly>
+                                <br>
+                                <label for="eachTransQRCode">Transaction QR Code Data</label>
+                                <br>
+                                <input type="text" name="eachTransQRCode" value="<%= tssJSON.data[i].qr_code_data %>" readonly>
+                                <br>
+                                <label for="eachTransLog">Transaction Log</label>
+                                <br>
+                                <input type="text" name="eachTransLog" value="<%= tssJSON.data[i].log %>" readonly>
+                                <br>
+                                <label for="eachTransSignature">Transaction Signaure</label>
+                                <br>
+                                <input type="text" name="eachTransSignature" value="<%= tssJSON.data[i].signature %>" readonly>
+                                <br>
+                                <hr>
+                                <br>
+                            <% } %>
+                        </form>
+                    <% } else { %>
+                        <h2>List Export of TSS</h2>
+                        <br>
+                        <form>
+                            <h3>List Export Number: <%= tssJSON.count %></h3>
+                            <br>
+                            <label for="listExportEnvironment">List Export Environment</label>
+                            <br>
+                            <input type="text" name="listExportEnvironment" value="<%= tssJSON._env %>" readonly>
+                            <br>
+                            <label for="listExportType">List Export Type</label>
+                            <br>
+                            <input type="text" name="listExportType" value="<%= tssJSON._type %>" readonly>
+                            <br>
+                            <label for="listExportVersion">List Export Version</label>
+                            <br>
+                            <input type="text" name="listExportVersion" value="<%= tssJSON._version %>" readonly>
+                            <br>
+                            
+                        </form>
+                    <% } %>
+                    
+              
+                </div>
+                <% } %>
+            </form>
+        </div>
+        
+    </div>
+    <br>
+</body>
+
+</html>
