@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <title>Fiskaly</title>
+</head>
+
+<body>
+
+    <h1>Fiskaly</h1>
+    <% if (transactions.length > 0){ %>
+        <p>Transactions List</p>
+        <% for (var i = 0; i < transactions.length; i++){ %>
+            <form action = "/thistransaction" method= "POST">
+                <span class="transactionspan">
+                    <label for="number">Number</label>
+                    <input id="number" type="text" name="number" placeholder="<%= transactions[i].number %>" value = "<%= transactions[i].number %>" readonly="true">
+                </span>
+                <span class="transactionspan">
+                    <label for="clientsn">Client Serial Number</label>
+                    <input id="clientsn" type="text" name="clientsn" placeholder="<%= transactions[i].client_serial_number %>" value = "<%= transactions[i].client_serial_number %>" readonly="true">
+                </span>
+                <span class="transactionspan">
+                    <label for="tssid">TSS ID</label>
+                    <input id="tssid" type="text" name="tssid" placeholder="<%= transactions[i].tss_id %>" value = "<%= transactions[i].tss_id %>" readonly="true">
+                </span>
+                <span class="transactionspan">
+                    <label for="txnid">Transaction ID</label>
+                    <input id="txnid" type="text" name="txnid" placeholder="<%= transactions[i]._id %>" value = "<%= transactions[i]._id %>" readonly="true">
+                </span>
+                <span class="transactionspan">
+                    <label for="time_start">Start time of Transaction</label>
+                    <input id="time_start" type="text" name="time_start" placeholder="<%= transactions[i].time_start %>" value = "<%= transactions[i].time_start %>" readonly="true">
+                </span>
+                <span class="transactionspan">
+                    <label for="time_end">End time of Transaction</label>
+                    <input id="time_end" type="text" name="time_end" placeholder="<%= transactions[i].time_end %>" value = "<%= transactions[i].time_end %>" readonly="true">
+                </span>
+                <button id="retrieve_transaction" type="submit" name = "action" value = "retrieve"><i id="bin_icon" class="far fa-folder"></i></i>Go to Transaction</button>   
+            </form>
+        <% } %>
+    <% } %>
+</div>    
+    <script src="/js/client.js"></script>
+</body>
+</html>

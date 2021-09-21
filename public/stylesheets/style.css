@@ -1,0 +1,127 @@
+*{
+	margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+h1{
+    margin: 20px 50px 10px 50px;
+}
+
+#auth-msg, .error-msg{
+    color:rgb(204, 5, 5);
+}
+
+#side_logo{
+	width: 10%;
+}
+
+.app_container{
+    text-align: center;
+    margin: 0 50px 150px 50px;
+    border-color: #F0F2F4;
+    border-style: solid;
+	overflow-y:auto;
+}
+img{
+    margin-top: 25px;
+    margin-bottom: 50px;
+}
+.credentials{
+    text-align: left;
+    margin-left: 10%;
+    
+}
+.api_credentials input{
+    width: 85%;
+    margin-bottom: 20px;
+}
+#disable-btn{
+    width: 15%;
+}
+
+
+span{
+    display: inline-block;
+    width: 12%;
+}
+#deregister-btn{
+    width: 15%;
+}
+#existingCredentials input{
+    background-color: rgb(228, 228, 228);
+    border-color: rgb(255, 255, 255);
+}
+#loadingspinner{
+    display: none;
+    width:18px;
+    height:18px;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+.login_details, .tss_details, .tss_clients_section, .tss_transactions_details{
+    text-align: left;
+    margin-left: 10%;
+}
+.login_details input, .tss_details input, .tss_clients_details input, .tss_transactions_details input {
+    width: 90%;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #E2E5EC;
+}
+.login_details label, .tss_details label, .tss_clients_details label, .tss_transactions_details label{
+    color: #646C9A;
+}
+#new-user-btn, #existing-user-btn, #remove_account-btn, #transaction_setting-btn, #client_setting-btn, #exports-btn ,#authAccount, #createTSS, #disableTSS, #tssClient, #createClient, #deregisterClient, #getTSSTransactions, #listExportsTSS, #retrieveTSS {
+    width: 20%;
+    background: #2797E8;
+    border-radius: 4px;
+    color: #FFFFFF;
+    line-height: 25px;
+}
+#remove_account-btn, #deregisterClient{
+    background:rgb(224, 68, 68);
+}
+
+#new-user-btn, #existing-user-btn{
+    border-color: #2797E8;
+}
+
+
+#new-user-btn:hover, #existing-user-btn:hover, #transaction_setting-btn:hover, #client_setting-btn:hover, #exports-btn:hover, #authAccount:hover, #createTSS:hover,  #disableTSS:hover, #tssClient:hover, #createClient:hover, #getTSSTransactions:hover, #listExportsTSS:hover, #retrieveTSS:hover{
+    background: #117ecc;
+}
+#remove_account-btn:hover, #deregisterClient:hover{
+    background: rgb(218, 45, 45);
+}
+
+#tssIDs, #tssPIN{
+    width: 14%;
+    margin: 0 15px 0 15px;
+}
+
+#clientIDs, #registerIDs{
+    width: 22%;
+    margin: 0 15px 0 15px;
+}
+
+
+
+#queryTSS-form {
+	height: 200px;
+	width: 90%;
+}
+
+#transactions_json-response{
+
+    height: 400px;
+    overflow-y:auto;
+    overflow-x:auto;
+    width: 90%;
+}
+
+
+ 
