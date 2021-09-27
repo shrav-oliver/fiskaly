@@ -16,7 +16,6 @@
     <p id ="appName">Fiskaly</p>
     <div id = "rectangle">
             <p>Exports</p>
-            
                 <% if (exports.length > 0){ %>
                     <p>Exports List</p>
                     <div id  = "export_rectangle">
@@ -45,7 +44,6 @@
                 <% } %>
                 <form action = "/setup/triggerExport" method = "POST">
                     <button id = "triggerExport" type = "submit" name = "trigger" >Trigger Export</button>
-
                 </form>
             
     </div>

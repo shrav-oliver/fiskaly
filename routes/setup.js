@@ -1806,7 +1806,7 @@ router.post('/transactions' , (req,res,next) => {
       axios(config1)
       .then(function (response) {
         var exportList = response.data.data;
-        console.log(exportList);
+        //console.log(exportList);
         // res.send(exportList);
         res.render('exports', {exports : exportList});
     
@@ -1951,7 +1951,57 @@ router.post('/transactions' , (req,res,next) => {
     });
 
     router.post('/thisexport',(req, res, next) => {
-        res.send("yolo bitches");
+        console.log(req.body);
+        var tss_id = req.body.tss_id;
+        var export_id = req.body.export_id;
+        var url = `https://kassensichv-middleware.fiskaly.com/api/v2/tss/${tss_id}/export/${export_id}`;
+        var data = JSON.stringify({
+            "api_key": "test_4ffvrpykwaae6wkrgvudaibg5_oliverpos",
+            "api_secret": "8iWF2PxSRoxBbYkvn40GtRTEE8WIwDHpjpR4xY16SpJ"
+        });
+        var atn;
+        var config = {
+            method: 'post',
+            url: 'https://kassensichv-middleware.fiskaly.com/api/v2/auth',
+            headers: { 
+            'Content-Type': 'application/json'
+            },
+            data : data
+        };
+        var data1 = JSON.stringify({});
+        
+        axios(config)
+        .then(function (response) {
+            atn = response.data.access_token;
+            var config1 = {
+                method: 'get',
+                url: url,
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${atn}`
+                  },
+                data: {}   
+            };
+        
+            axios(config1)
+            .then((response) => {
+                var thisExport = response.data;
+                console.log(thisExport);
+                res.render('thisexportdummy');
+                
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        
+        console.log(tss_id);
+        console.log(export_id);
+        //res.send("yolo bitches");
     });
 
 
