@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios');
-const { uuid } = require('uuidv4');
+const { v4: uuidv4 } = require('uuid');
 
 var bearerAuth;
 var clientCount;
 var clientList;
-
+//uuidv4 function
 //PostgresDB authentication setup
 const {Pool, Client} = require('pg');
 
@@ -1773,7 +1773,7 @@ router.post('/transactions' , (req,res,next) => {
   });
   
   
-  router.get('/exports', (req, res,next) =>{
+  router.post('/dataExports', (req, res,next) =>{
     var data = JSON.stringify({
       "api_key": "test_4ffvrpykwaae6wkrgvudaibg5_oliverpos",
       "api_secret": "8iWF2PxSRoxBbYkvn40GtRTEE8WIwDHpjpR4xY16SpJ"
@@ -1793,7 +1793,7 @@ router.post('/transactions' , (req,res,next) => {
       var atn = response.data.access_token;
       //res.send(atn);
       //Url to retrieve all clients
-      var url4 = `https://kassensichv.io/api/v1/export`;
+      var url4 = `https://kassensichv-middleware.fiskaly.com/api/v2/export`;
       var config1 = {
         method: 'get',
         url: url4,
@@ -1805,7 +1805,8 @@ router.post('/transactions' , (req,res,next) => {
         };
       axios(config1)
       .then(function (response) {
-        var exportList = response.data;
+        var exportList = response.data.data;
+        console.log(exportList);
         // res.send(exportList);
         res.render('exports', {exports : exportList});
     
@@ -1895,7 +1896,63 @@ router.post('/transactions' , (req,res,next) => {
     router.post('/clientmetadata', (req, res, next) => {
         res.send(req.body);
     });
+    
+    router.post('/triggerExport' , (req, res, next) => {
+        //create the unique identifier for the export
+        var uid =uuidv4();
+        console.log(uid);
+        //res.send(uid);
+        var data = JSON.stringify({
+            "api_key": "test_4ffvrpykwaae6wkrgvudaibg5_oliverpos",
+            "api_secret": "8iWF2PxSRoxBbYkvn40GtRTEE8WIwDHpjpR4xY16SpJ"
+          });
+          
+          var config = {
+            method: 'post',
+            url: 'https://kassensichv-middleware.fiskaly.com/api/v2/auth',
+            headers: { 
+              'Content-Type': 'application/json'
+            },
+            data : data
+          };
+          
+          axios(config)
+          .then(function (response) {
+            var atn = response.data.access_token;
+            //res.send(atn);
+            //Url to retrieve all clients
+            var tss_id = "2b0d5638-7980-4cfc-9901-f9a69432fe30";
+            var export_id = uid;
+            var url4 = `https://kassensichv-middleware.fiskaly.com/api/v2/tss/${tss_id}/export/${export_id}`;
+            var config1 = {
+              method: 'put',
+              url: url4,
+              headers: { 
+                  'Content-Type': 'application/json',
+                  'Authorization' : `Bearer ${atn}`
+                },
+              data: {}
+              };
+            axios(config1)
+            .then(function (response) {
+              console.log(response);
+          
+          
+              //res.render('client', {client : response.data, });
+            })
+            .catch(function (error) {
+              console.log(error);
+            });   
+            //console.log(JSON.stringify(response.data));
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    });
 
+    router.post('/thisexport',(req, res, next) => {
+        res.send("yolo bitches");
+    });
 
 
 

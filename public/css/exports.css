@@ -1,0 +1,45 @@
+.exportSpan label{
+display: block;
+}
+
+.exportSpan input{
+margin-right: 10px;
+}
+
+.exportSpan{
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+#time_start, #time_end{
+    width: 100px;
+}
+
+#exportList{
+    margin-left: 10px;
+}
+
+#rectangle{
+    border: 1px solid rgb(187, 187, 187);
+    margin-left: 25px;
+    margin-right: 25px;
+    padding-bottom: 25px;
+}
+
+#appName{
+    margin-left: 10px;
+}
+
+#export_rectangle{
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+#triggerExport{
+    margin-top: 10px;
+    margin-left: 35px;
+}
+
+#rectangle p{
+    margin-left: 35px;
+}
