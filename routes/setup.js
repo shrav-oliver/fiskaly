@@ -1987,7 +1987,7 @@ router.post('/transactions' , (req,res,next) => {
             .then((response) => {
                 var thisExport = response.data;
                 console.log(thisExport);
-                res.render('thisexportdummy');
+                res.render('thisexport', {thisexport: thisExport});
                 
             })
             .catch(function (error) {

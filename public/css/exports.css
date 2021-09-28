@@ -1,3 +1,7 @@
+*{
+    font-family: 'Poppins';
+}
+
 .exportSpan label{
 display: block;
 }
@@ -42,4 +46,30 @@ margin-right: 10px;
 
 #rectangle p{
     margin-left: 35px;
+}
+
+#exportList button{
+    border: 1px;
+    height: 30px;
+    border-radius:  4px;
+    background-color: #d4cef7 ;
+}
+
+#exportList input{
+    height: 30px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#exportList label{
+    font-size: 12px;
+    color: #646C9A;
+}
+
+#triggerExport button{
+    border: 1px;
+    height: 30px;
+    border-radius:  4px;
+    background-color: #d4cef7 ;
+    margin-left: 0px;
 }
