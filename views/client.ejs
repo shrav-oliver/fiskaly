@@ -18,38 +18,38 @@
         <div id = "clientDetails">
             <p>Client details</p>
                 <form id = "clientForm" action = "/clientdetails" method = "POST">
-                    <span class = "clientSpan">
+                    <span class = "thisclientSpan">
                         <label for="serial">Serial Number</label>
                         <input id="serial" class = "clientInput" type="text" name="serial" placeholder="<%= client.serial_number %>" value = "<%= client.serial_number %>" readonly="true">
                     </span><br>
-                    <span class = "clientSpan">
+                    <span class = "thisclientSpan">
                         <label for="state">State</label>
                         <input id="state" class = "clientInput" type="text" name="state" placeholder="<%= client.state %>" value = "<%= client.state %>" readonly="true"><br>
                     </span><br>
-                    <span class = "clientSpan">
+                    <span class = "thisclientSpan">
                         <label for="tssid">TSS ID</label>
                         <input id="tssid" class = "clientInput" type="text" name="tssid" placeholder="<%= client.tss_id %>" value = "<%= client.tss_id %>" readonly="true">
                     </span><br>
-                    <span class = "clientSpan">
+                    <span class = "thisclientSpan">
                         <label for="id">ID</label>
                         <input id="id" class = "clientInput" type="text" name="id" placeholder="<%= client._id %>" value = "<%= client._id %>" readonly="true">
                     </span><br>
-                    <span class = "clientSpan">
+                    <span class = "thisclientSpan">
                         <label for="type">Type</label>
                         <input id="type" class = "clientInput" type="text" name="type" placeholder="<%= client._type %>" value = "<%= client._type %>" readonly="true">
-                    </span><br><span class = "clientSpan">
+                    </span><br><span class = "thisclientSpan">
                         <label for="env">Env</label>
                         <input id="env" class = "clientInput" type="text" name="env" placeholder="<%= client._env %>" value = "<%= client._env %>" readonly="true">
                     </span><br>
-                    <span class = "clientSpan">
+                    <span class = "thisclientSpan">
                         <label for="version">Version</label>
                         <input id="version" class = "clientInput" type="text" name="version" placeholder="<%= client._version %>" value = "<%= client._version %>" readonly="true">
                     </span><br>
-                    <span class = "clientSpan">
+                    <span class = "thisclientSpan">
                         <label for="timecr">Time of Creation</label>
                         <input id="timecr" class = "clientInput" type="text" name="timecr" placeholder="<%= client.time_creation %>" value = "<%= client.time_creation %>" readonly="true">
                     </span><br>
-                    <span class = "clientSpan">
+                    <span class = "thisclientSpan">
                         <label for="timeup">Time of Update</label>
                         <input id="timeup" class = "clientInput" type="text" name="timeup" placeholder="<%= client.time_update %>" value = "<%= client.time_update %>" readonly="true">
                     </span><br>
@@ -58,15 +58,6 @@
                         <button id="update_client" type="submit" name = "action" value = "update"><i id="bin_icon" class="far fa-trash-alt"></i></i>Update Client Details</button>
                         <button id="retrieve_metadata" type="submit" name = "action" value = "getmetadata" formaction = "/setup/clientmetadata"><i id="bin_icon" class="far fa-trash-alt"></i></i>Retrieve Metadata</button><br>
                     </div>
-                    <span class = "metaInput">
-                        <label for="prop1">Property</label>
-                        <input id="prop1" type="text" name="prop1" placeholder="Enter first property name" >
-                    </span>
-                    <span class = "metaInput">
-                        <label for="val1">Value</label>
-                        <input id="val1" type="text" name="prop1" placeholder="Enter first property value" >
-                    </span>
-                    <button id="update_metadata" type="submit" name = "action" value = "postmetadata"><i id="bin_icon" class="far fa-folder"></i></i>Update Metadata</button>
                 </form>
         </div>
 
@@ -79,6 +70,12 @@
                                 <span class="transactionspan">
                                     <label for="number">Number</label>
                                     <input id="number" type="text" name="number" placeholder="<%= transactions[i].number %>" value = "<%= transactions[i].number %>" readonly="true">
+                                </span>
+                                <span class="transactionspan">
+                                    <input id="tssid" type="hidden" name="tssid" placeholder="<%= transactions[i].tss_id %>" value = "<%= transactions[i].tss_id %>" readonly="true">
+                                </span>
+                                <span class="transactionspan">
+                                    <input id="txnid" type="hidden" name="txnid" placeholder="<%= transactions[i]._id %>" value = "<%= transactions[i]._id %>" readonly="true">
                                 </span>
                                 <span class="transactionspan">
                                     <label for="time_start">Start time of Txn</label>
