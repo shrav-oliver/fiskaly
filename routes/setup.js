@@ -2003,6 +2003,59 @@ router.post('/transactions' , (req,res,next) => {
         console.log(export_id);
         //res.send("yolo bitches");
     });
+    router.post('/getTar', (req, res, next) => {
+        var tss_id = req.body.tss_id;
+        var export_id = req.body.export_id;
+        var url = `https://kassensichv-middleware.fiskaly.com/api/v2/tss/${tss_id}/export/${export_id}/file`;
+
+
+        var axios = require('axios');
+        var data = JSON.stringify({
+            "api_key": "test_4ffvrpykwaae6wkrgvudaibg5_oliverpos",
+            "api_secret": "8iWF2PxSRoxBbYkvn40GtRTEE8WIwDHpjpR4xY16SpJ"
+        });
+        var atn;
+        var config = {
+            method: 'post',
+            url: 'https://kassensichv-middleware.fiskaly.com/api/v2/auth',
+            headers: { 
+            'Content-Type': 'application/json'
+            },
+            data : data
+        };
+        var data1 = JSON.stringify({});
+
+        axios(config)
+        .then(function (response) {
+            atn = response.data.access_token;
+            var config1 = {
+                method: 'get',
+                url: url,
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${atn}`
+                },
+                data: {}   
+            };
+
+            axios(config1)
+            .then((response) => {
+                var csv = response.data; // Not including for example.
+                //console.log(csv);
+            res.setHeader('Content-disposition', 'attachment; filename=testtarfile.csv');
+            res.set('Content-Type', 'application/json');
+            res.status(200).send(csv);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+    })
 
 
 
