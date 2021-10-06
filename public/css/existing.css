@@ -71,7 +71,9 @@
 }
 
 #appTitle{
-    margin-left: 10px;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 20px 50px 10px 50px;
 }
 
 #update_metadata{
@@ -127,6 +129,10 @@
     */
 }
 
+#client_details{
+    margin-left: 10px;
+}
+
 .thisclientSpan{
     display: inline-block;
     margin-bottom: 10px;
@@ -145,7 +151,36 @@
 
 #clientList{
     margin: 25px;
-    border: 1px solid lightgrey;
-    height: 550px;
     overflow-y: auto;
+}
+
+#metadata{
+    margin-left: 10px;
+    margin-bottom:0px;
+}
+
+.metadataSpan{
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.metadataSpan label{
+    display: block;
+    font-size: 12px;
+}
+
+.metadataSpan input{
+    height: 30px;
+    width: 240px;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+#rectangle{
+    height: 800px;
+    width: 700px;
+    overflow-y: auto;
+    border: 1px solid lightgray;
+    margin: 25px;
 }

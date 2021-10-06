@@ -32,7 +32,19 @@
                             <label for="export_id">Export ID</label>
                             <input id="export_id" type="text" name="export_id" placeholder="<%= thisexport._id %>" value = "<%= thisexport._id %>" readonly="true"><br> 
                         </span>
-                        <button id ="retrieve_metadata" type = "submit" name = "retrieve">Retrieve Metadata</button>
+                        <% if (metadata.length > 0){ %>
+                            <p id = "metadata">Metadata</p>
+                            <% for (var i = 0; i < metadata.length; i++){ %>
+                                <span class="metadataSpan">
+                                    <label for="metadata_key">Key</label>
+                                    <input id="metadata_key" type="text" name="metadata_key" placeholder="<%= metadata[i][0] %>" value = "<%= metadata[i][0] %>" readonly="true"> 
+                                </span>
+                                <span class="metadataSpan">
+                                    <label for="metadata_value">Value</label>
+                                    <input id="metadata_value" type="text" name="metadata_value" placeholder="<%= metadata[i][1] %>" value = "<%= metadata[i][1] %>" readonly="true"><br> 
+                                </span>
+                            <% } %>
+                        <% } %>
                         <button id ="export_list" type= "submit" name = "exportList" formaction = "/setup/dataExports">Back to Exports</button>
                         <button id = "tar" type = "submit" name = "tarfile" formaction = "/setup/getTar">Retrieve Tar File</button>
                     </form>            

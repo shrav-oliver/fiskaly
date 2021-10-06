@@ -9,7 +9,7 @@
 }
 
 .transactionspan input{
-    width: 120px;
+    width: 80px;
     border: 1px solid lightgray;
     height: 30px;
 }
@@ -33,21 +33,13 @@
     margin: 25px;
     border: 1px solid lightgray;
     height: 800px;
-    width: 1000px;
+    width: 900px;
 }
 
 #transactionList{
     overflow-y: auto;
     height: 600px;
     margin-left: 10px;
-}
-
-#time_start{
-    width: 100px;
-}
-
-#time_end{
-    width: 100px;
 }
 
 *{

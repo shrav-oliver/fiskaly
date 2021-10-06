@@ -1680,7 +1680,6 @@ router.post('/deregisterClient', function(req, res, next) {
 });
 
 router.post('/clients', (req,res,next) => {
-    var axios = require('axios');
     var data = JSON.stringify({
       "api_key": "test_4ffvrpykwaae6wkrgvudaibg5_oliverpos",
       "api_secret": "8iWF2PxSRoxBbYkvn40GtRTEE8WIwDHpjpR4xY16SpJ"
@@ -1861,6 +1860,7 @@ router.post('/transactions' , (req,res,next) => {
 	  axios(config1)
 	  .then(function (response) {
 		var client = response.data;
+        console.log(client);
 		var config2 = {
 		  method: 'get',
 		  url: url3,
@@ -1872,7 +1872,36 @@ router.post('/transactions' , (req,res,next) => {
 		  };
 		  axios(config2)
 		  .then(function (response) {
-		   res.render('client', {client : client, transactions: response.data.data });
+           var transactions = response.data.data;
+           console.log(transactions);
+		   //res.render('client', {client : client, transactions: response.data.data });
+           var url4 = `https://kassensichv-middleware.fiskaly.com/api/v2/tss/${tssid}/client/${clientid}/metadata`;
+           var config3 = {
+           method: 'get',
+           url: url4,
+           headers: { 
+               'Content-Type': 'application/json',
+               'Authorization' : `Bearer ${atn}`
+               },
+           data: {}
+           };
+           axios(config3)
+           .then(function (response) {
+               console.log(response.data);
+               let list1 = Object.entries(response.data);
+               //res.render('thisexport', {thisexport: thisExport, metadata: list1});
+               res.render('client', {client : client, transactions: transactions, metadata: [
+                [ 'client_guid', '' ],
+                [ 'outlet_name', 'Avalon' ],
+                [ 'register_name', 'test_register' ]
+              ] });
+       
+       
+           //res.render('client', {client : response.data, });
+           })
+           .catch(function (error) {
+               console.log(error);
+           });   
 		  })
 		  .catch(function (error) {
 			console.log(error);
@@ -1892,11 +1921,7 @@ router.post('/transactions' , (req,res,next) => {
 	    console.log(error);
 	});
 	});
-    
-    router.post('/clientmetadata', (req, res, next) => {
-        res.send(req.body);
-    });
-    
+
     router.post('/triggerExport' , (req, res, next) => {
         //create the unique identifier for the export
         var uid =uuidv4();
@@ -1921,7 +1946,7 @@ router.post('/transactions' , (req,res,next) => {
             var atn = response.data.access_token;
             //res.send(atn);
             //Url to retrieve all clients
-            var tss_id = "2b0d5638-7980-4cfc-9901-f9a69432fe30";
+            var tss_id = "0458b31d-66d6-46a7-8572-2d5dde97dbb6";
             var export_id = uid;
             var url4 = `https://kassensichv-middleware.fiskaly.com/api/v2/tss/${tss_id}/export/${export_id}`;
             var config1 = {
@@ -1936,6 +1961,7 @@ router.post('/transactions' , (req,res,next) => {
             axios(config1)
             .then(function (response) {
               console.log(response);
+              res.redirect(307, '/setup/dataExports');
           
           
               //res.render('client', {client : response.data, });
@@ -1987,7 +2013,29 @@ router.post('/transactions' , (req,res,next) => {
             .then((response) => {
                 var thisExport = response.data;
                 console.log(thisExport);
-                res.render('thisexport', {thisexport: thisExport});
+                //res.render('thisexport', {thisexport: thisExport});
+                var url4 = `https://kassensichv-middleware.fiskaly.com/api/v2/tss/${tss_id}/export/${export_id}/metadata`;
+                var config3 = {
+                method: 'get',
+                url: url4,
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization' : `Bearer ${atn}`
+                    },
+                data: {}
+                };
+                axios(config3)
+                .then(function (response) {
+                    console.log(response.data);
+                    let list1 = Object.entries(response.data);
+                    res.render('thisexport', {thisexport: thisExport, metadata: list1});
+            
+            
+                //res.render('client', {client : response.data, });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });   
                 
             })
             .catch(function (error) {
@@ -2055,6 +2103,10 @@ router.post('/transactions' , (req,res,next) => {
             console.log(error);
         });
 
+    })
+
+    router.post('/thistransaction', (req, res, next) => {
+        res.send("<p> Work In Progress</p>");
     })
 
     

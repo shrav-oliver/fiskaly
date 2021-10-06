@@ -15,10 +15,11 @@
 .exportSpan input{
     width: 550px;
     height: 30px;
+    border: 1px solid #ddd;
 }
 
 #this_export button{
-    width: 183px;
+    width: 277px;
     height: 30px;
     margin-top: 10px;
     border: 1px;
@@ -30,7 +31,7 @@
     background-color: #f3cfcf;
 }
 
-#retrieve_metadata{
+#tar{
     background-color: #d4cef7 ;
 }
 
@@ -45,4 +46,31 @@
     padding-bottom: 25px;
     padding-left: 25px;
     height: 798px;
+}
+
+#metadata{
+    margin-left: 10px;
+}
+
+.metadataSpan{
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.metadataSpan label{
+    display: block;
+}
+
+.metadataSpan input{
+    height: 30px;
+    width: 240px;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+#appName{
+    font-size: 2em;
+    font-weight: bold;
+    margin: 20px 50px 10px 50px;
 }

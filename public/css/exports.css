@@ -37,6 +37,8 @@ margin-right: 10px;
 #export_rectangle{
     margin-left: 25px;
     margin-right: 25px;
+    height: 600px;
+    overflow-y: auto;
 }
 
 #triggerExport{
@@ -72,4 +74,10 @@ margin-right: 10px;
     border-radius:  4px;
     background-color: #d4cef7;
     margin-left: 0px;
+}
+
+#appName{
+    font-size: 2em;
+    font-weight: bold;
+    margin: 20px 50px 10px 50px;
 }
