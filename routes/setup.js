@@ -2106,7 +2106,7 @@ router.post('/transactions' , (req,res,next) => {
     })
 
     router.post('/thistransaction', (req, res, next) => {
-        res.send("<p> Work In Progress</p>");
+        res.send(req.body);
     })
 
     
